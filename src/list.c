@@ -30,7 +30,7 @@ void display_list(t_list* list, int level) {
 	}
 	else{
 		printf("[list head_%d @-]--> ",level);
-		while(temp->levels[level] != NULL){
+		while(temp != NULL){
 			printf("[ %d|@- ] --> ", temp->value);
 			temp = temp ->levels[level];
 		}
