@@ -5,7 +5,7 @@
 // Create an empty level list: we'll give the maximum number of levels this list can have
  
 t_list* create_list(int max_levels) {
-	t_list *list;
+	t_list *list = (t_list*)malloc(sizeof(t_list));
 	list->heads = (t_cell**)malloc(sizeof(t_cell*) * max_levels);
 	list->max_levels = max_levels;
 	return list;
