@@ -17,6 +17,8 @@ void display_level(t_list* list, int level);
 
 void display_list(t_list* list);
 
+void display_line(int length);
+
 void display_list_aligned(t_list* list);
 
 void insert_cell_sorted(t_list* list, t_cell* cell);

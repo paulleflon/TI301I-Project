@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "../headers/list.h"
 
  /**
@@ -47,41 +48,60 @@ void display_level(t_list* list, int level) {
     }
 }
 
+/**
+ * Displays an hyphen line of a given length
+ * @param length The length of the line to display
+ */
+void display_line(int length) {
+	for (int i = 0; i < length; i++)
+		printf("-");
+}
 
 /**
  * Displays all levels of a list, aligning the cells at each level
  * @param list The list to display
  */
 void display_list_aligned(t_list* list){
-	// Not documented because it's too boring
-	// Not always aligned because of multi-digit numbers, but good enough.
+	// The alignment reference will always be the first level,
+	// As it includes all the cells
 	t_cell *temp, *temp_level1;
-	display_level(list, 0);
-	for (int i = 1; i < list->max_levels; i++) {
+	display_level(list, 0); // The first level can be displayed as usual
+	for (int i = 1; i < list->max_levels; i++) { // Logic for each level
 		temp = list->heads[i];
 		temp_level1 = list->heads[0];
 		printf("[list head_%d @-]--", i);
+		// If this level points to nothing, we just have to
+		// Display a line until level 1 reaches null.
 		if (temp == NULL) {
 			while (temp_level1 != temp) {
-				printf("----------");
+				// To set a blank line instead of a level,
+				// The line must be 10 characters long for 1 digit.
+				// Then we add to its length if the reference cell has more digits
+				// The number of additional digits is given by log10, converted to an integer.
+				display_line(10 + (int)log10(temp_level1->value));
 				temp_level1 = temp_level1->levels[0];
 			}
 			printf("> NULL\n");
 		}
-		else{
+		else {
 			while (temp->levels[i] != NULL) {
+				// If the current level cell doesn't match level 1,
+				// We display blank line until they match again.
 				while (temp_level1 != temp && temp_level1->levels[0]) {
-					printf("----------");
+					display_line(10 + (int)log10(temp_level1->value));
 					temp_level1 = temp_level1->levels[0];
 				}
+				// When it finally matches, we display the cell as usual
 				if (temp == temp_level1) {
 					printf(">[ %d|@-]--", temp->value);
 					temp_level1 = temp_level1->levels[0];
 				}
 				temp = temp->levels[i];
 			}
+			// Then, if this level stops before level 1,
+			// We keep printing a blank line to align the end of each level
 			while (temp_level1) {
-				printf("----------");
+				display_line(10 + (int)log10(temp->value));
 				temp_level1 = temp_level1->levels[0];
 			}
 			printf("> NULL\n");
