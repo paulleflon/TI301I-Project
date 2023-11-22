@@ -134,7 +134,7 @@ void insert_cell_sorted(t_list* list, t_cell* cell) {
 		// It means that we have to bind this cell directly to the list's head at this level,
 		// And all the ones below since a lower level can't have a smaller entry point.
 		// So we get out of this loop and go to the following one.
-		if (current->value > cell->value)
+		if (!current || current->value > cell->value)
 			// break is not always considered a good practice,
 			// but with good commenting, it **is** okay.
 			break;
