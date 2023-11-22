@@ -119,5 +119,5 @@ void insert_cell_sorted(t_list* list, t_cell* cell) {
 	for (;i < cell->nb_levels; i++) {
 		cell->levels[i] = list->heads[i];
 		list->heads[i] = cell;
-	}ㄴ
+	}
 }
