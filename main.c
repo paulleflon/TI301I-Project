@@ -9,6 +9,6 @@ int main() {
 		insert_cell(lst, create_cell((13 - i)*2, nb_levels[i]));
 	display_list(lst);
 	insert_cell_sorted(lst, create_cell(45, 5));
-	display_list(lst);
+	display_list_aligned(lst);
 	return 0;
 }

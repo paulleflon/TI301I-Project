@@ -38,45 +38,56 @@ void display_level(t_list* list, int level) {
 	if (temp == NULL)
 		printf("[list head_%d @-]-->NULL\n", level);
 	else {
-		printf("[list head_%d @-]--> ",level);
+		printf("[list head_%d @-]-->",level);
 		while(temp != NULL) {
-			printf("[ %d|@- ] --> ", temp->value);
+			printf("[ %d|@-]-->", temp->value);
 			temp = temp ->levels[level];
 		}
 		printf(" NULL\n");
     }
 }
 
-// Optional: display all levels of the list, by aligning the cells
-/*
-void display_list_aligned(t_list* list, int level){
-	t_cell *temp = list->heads[level];
-	t_cell *temp_level1 = list->heads[0];
-	printf("[list head_%d @-]--",level);
-	if (temp == NULL){
-		while (temp_level1!=temp){
-			printf("------------");
-			temp_level1 = temp_level1->levels[0];
-		}
-		printf("> NULL\n");
-	}
-	else{
-		while (temp->levels[level]!=NULL){
-			while (temp_level1!=temp){
-				printf("------------");
+
+/**
+ * Displays all levels of a list, aligning the cells at each level
+ * @param list The list to display
+ */
+void display_list_aligned(t_list* list){
+	// Not documented because it's too boring
+	// Not always aligned because of multi-digit numbers, but good enough.
+	t_cell *temp, *temp_level1;
+	display_level(list, 0);
+	for (int i = 1; i < list->max_levels; i++) {
+		temp = list->heads[i];
+		temp_level1 = list->heads[0];
+		printf("[list head_%d @-]--", i);
+		if (temp == NULL) {
+			while (temp_level1 != temp) {
+				printf("----------");
 				temp_level1 = temp_level1->levels[0];
 			}
-			printf(">[ %d|@- ] -- ", temp->value);
-			temp = temp ->levels[level];
-
-			
+			printf("> NULL\n");
+		}
+		else{
+			while (temp->levels[i] != NULL) {
+				while (temp_level1 != temp && temp_level1->levels[0]) {
+					printf("----------");
+					temp_level1 = temp_level1->levels[0];
+				}
+				if (temp == temp_level1) {
+					printf(">[ %d|@-]--", temp->value);
+					temp_level1 = temp_level1->levels[0];
+				}
+				temp = temp->levels[i];
+			}
+			while (temp_level1) {
+				printf("----------");
+				temp_level1 = temp_level1->levels[0];
+			}
+			printf("> NULL\n");
 		}
 	}
-
-	
-	
 }
-*/
 
 /**
  * Displays all levels of a list
