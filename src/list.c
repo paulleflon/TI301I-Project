@@ -21,9 +21,12 @@ void insert_cell(t_list* list, t_cell* cell) {
 	}
 }
 
-
-// Display all the cells in the list for a given level
-void display_list(t_list* list, int level) {
+/**
+ * Displays all the nodes of a list in a given level
+ * @param list The list to display
+ * @param level The level to display
+ */
+void display_level(t_list* list, int level) {
 	t_cell *temp = list->heads[level];
 	if (temp == NULL){
 		printf("[list head_%d @-]-->NULL\n",level);
@@ -73,16 +76,48 @@ void display_list_aligned(t_list* list, int level){
 
 void display_all(t_list* list){
 	for (int i=0; i<list->max_levels;  i++){
-		display_list(list, i);
+		display_level(list, i);
 	}
 }
 
 
-//  Insert a level cell in the list, at the right place, so that the list remains sorted in ascending order 
-/*void sorted_insert(t_list* list){
+/**
+ * Inserts a level cell while keeping the list sorted (simple implementation, no optimization)
+ * @param list The list to insert into
+ * @param cell The cell to insert
+ */
+void insert_cell_sorted(t_list* list, t_cell* cell) {
+	int i;
+	t_cell *current;
+	// We perform the insertion at each level.
+	for (i = 0; i < cell->nb_levels; i++) {
+		current = list->heads[i];
+		// If the first cell of the level is greater than the cell we want to insert,
+		// It means that we have to bind this cell directly to the list's head at this level,
+		// And all the ones below since a lower level can't have a smaller entry point.
+		// So we get out of this loop and go to the following one.
+		if (current->value > cell->value)
+			// break is not always considered a good practice, but with good commenting, it **is** okay.
+			break;
+		// Now, we search for the cell we will insert our new cell from.
+		// If our new cell is greater than every cell in the level,
+		// The second part of the condition will try to access a null pointer
+		// So the first part prevents it and stops the loop if we reached the last cell of the level.
+		while (current->levels[i] && current->levels[i]->value < cell->value)
+			current = current->levels[i];
+		// Then, we perform a usual insert.
+		cell->levels[i] = current->levels[i];
+		current->levels[i] = cell;
+	}
+	// Then, for all the levels where the cell we want to insert is the smallest,
+	// We bind this cell to the list head.
+	// The syntax here can be confusing:
+	// Since we may have stopped the previous loop before the end,
+	// We already handled the i first levels, now we must make sure the remaining levels
+	// Are also handled (that is binding the cell to the list heads)
+	// So we don't reassign i, and just start with value i had when we exited the previous loop.
+	for (;i < cell->nb_levels; i++) {
+		cell->levels[i] = list->heads[i];
+		list->heads[i] = cell;
+	}ㄴ
 }
-*/
-/* For this last function, it is possible to make a 'simple' insertion at each level, starting
-from the beginning of the list, but it is possible to be more efficient - it's up to you
-to work out how. 
-*/

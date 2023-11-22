@@ -13,12 +13,12 @@ t_list* create_list(int max_levels);
 
 void insert_cell(t_list* list, t_cell* cell);
 
-void display_list(t_list* list, int level);
+void display_level(t_list* list, int level);
 
 void display_all(t_list* list);
 
 void display_list_aligned(t_list* list, int level);
 
-void sorted_insert(t_list* list);
+void insert_cell_sorted(t_list* list, t_cell* cell);
 
 #endif
