@@ -84,7 +84,7 @@ void display_list_aligned(t_list* list){
 			printf("> NULL\n");
 		}
 		else {
-			while (temp->levels[i] != NULL) {
+			while (temp != NULL) {
 				// If the current level cell doesn't match level 1,
 				// We display blank line until they match again.
 				while (temp_level1 != temp && temp_level1->levels[0]) {
@@ -101,7 +101,7 @@ void display_list_aligned(t_list* list){
 			// Then, if this level stops before level 1,
 			// We keep printing a blank line to align the end of each level
 			while (temp_level1) {
-				display_line(10 + (int)log10(temp->value));
+				display_line(10 + (int)log10(temp_level1->value));
 				temp_level1 = temp_level1->levels[0];
 			}
 			printf("> NULL\n");
