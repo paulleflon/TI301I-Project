@@ -15,6 +15,27 @@ t_list* create_list(int max_levels) {
 	return list;
 }
 
+/**
+ * Creates a sample list to test searching algorithms
+ * @param n The maximum level of the list (with the number of cells being 2^n - 1)
+ * @return The generated sample list
+ */
+t_list* create_sample_list(int n) {
+	t_list* lst = create_list(n);
+	t_cell* cell;
+	int level,
+		length = pow(2, n) - 1;
+	for (int i = 1; i <= length; i++) {
+		level = 1;
+		for (int j = 1; j <= n; j++) {
+			if (i % (int)pow(2, j) == 0) level++;
+		}
+		cell = create_cell(i, level);
+		insert_cell_sorted(lst, cell);
+	}
+	return lst;
+}
+
 
 /**
  * Inserts a cell from the head of a multi-level list
