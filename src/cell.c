@@ -1,9 +1,12 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "../headers/cell.h"
 
-// Create a cell: enter its value and the number of levels in the cell to obtain a pointer to the cell
-
+/**
+ * Creates a level cell
+ * @param val The value of the cell
+ * @param nb_level The number of levels in the cell
+ * @return A pointer to the created cell
+ */
 t_cell* create_cell(int val, int nb_level) {
 	t_cell* new = (t_cell*)malloc(sizeof(t_cell));
 	new->value = val;

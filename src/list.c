@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include "../headers/list.h"
 
-// Create an empty level list: we'll give the maximum number of levels this list can have
- 
+ /**
+  * Creates an empty multi-level list
+  * @param max_levels The maximum number of levels the list can support
+  * @return A pointer to the created list
+  */
 t_list* create_list(int max_levels) {
 	t_list *list = (t_list*)malloc(sizeof(t_list));
 	list->heads = (t_cell**)malloc(sizeof(t_cell*) * max_levels);
@@ -11,10 +14,14 @@ t_list* create_list(int max_levels) {
 	return list;
 }
 
-//Insert a cell with levels at the beginning (head) of the list (be careful to take into account the number of levels in the cell) 
 
+/**
+ * Inserts a cell from the head of a multi-level list
+ * @param list The list to insert the cell into
+ * @param cell The cell to insert in the list
+ */
 void insert_cell(t_list* list, t_cell* cell) {
-	// We have two conditions  in case the cell has more levels than the list allows.
+	// We have two conditions in case the cell has more levels than the list allows.
 	for (int i = 0; i < cell->nb_levels && i < list->max_levels; i++) {
 		cell->levels[i] = list->heads[i];
 		list->heads[i] = cell;
@@ -28,12 +35,11 @@ void insert_cell(t_list* list, t_cell* cell) {
  */
 void display_level(t_list* list, int level) {
 	t_cell *temp = list->heads[level];
-	if (temp == NULL){
-		printf("[list head_%d @-]-->NULL\n",level);
-	}
-	else{
+	if (temp == NULL)
+		printf("[list head_%d @-]-->NULL\n", level);
+	else {
 		printf("[list head_%d @-]--> ",level);
-		while(temp != NULL){
+		while(temp != NULL) {
 			printf("[ %d|@- ] --> ", temp->value);
 			temp = temp ->levels[level];
 		}
@@ -72,12 +78,13 @@ void display_list_aligned(t_list* list, int level){
 }
 */
 
-// Show all levels in the list 
-
-void display_all(t_list* list){
-	for (int i=0; i<list->max_levels;  i++){
+/**
+ * Displays all levels of a list
+ * @param list The list to display
+ */
+void display_list(t_list* list){
+	for (int i=0; i<list->max_levels; i++)
 		display_level(list, i);
-	}
 }
 
 
@@ -97,7 +104,8 @@ void insert_cell_sorted(t_list* list, t_cell* cell) {
 		// And all the ones below since a lower level can't have a smaller entry point.
 		// So we get out of this loop and go to the following one.
 		if (current->value > cell->value)
-			// break is not always considered a good practice, but with good commenting, it **is** okay.
+			// break is not always considered a good practice,
+			// but with good commenting, it **is** okay.
 			break;
 		// Now, we search for the cell we will insert our new cell from.
 		// If our new cell is greater than every cell in the level,
