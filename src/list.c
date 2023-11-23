@@ -213,7 +213,7 @@ int search_list_level(t_list* list, int level, int value) {
  * @return Whether the value is in the list
  */
 int search_list(t_list* list, int value) {
-	for (int i = list->max_levels-1; i--;) {
+	for (int i = list->max_levels-1; i >= 0; i--) {
 		int result = search_list_level(list, i, value);
 		if (result)
 			return 1;
