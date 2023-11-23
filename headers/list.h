@@ -25,4 +25,8 @@ void display_list_aligned(t_list* list);
 
 void insert_cell_sorted(t_list* list, t_cell* cell);
 
+int search_list_level(t_list* list, int level, int value);
+
+int search_list(t_list* list, int value);
+
 #endif
