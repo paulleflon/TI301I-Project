@@ -45,4 +45,6 @@ void displayTime();
  */
 char *getTimeAsString();
 
+double getMilliseconds();
+
 #endif //UNTITLED1_TIMER_H

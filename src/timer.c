@@ -43,3 +43,10 @@ char *getTimeAsString()
     // return the buffer
     return buffer;
 }
+/**
+ * Returns the data we need
+ * @return The timer's time in milliseconds
+ */
+double getMilliseconds() {
+	return _timer._msecs;
+}
