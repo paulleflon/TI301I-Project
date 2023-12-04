@@ -225,4 +225,5 @@ int search_list(t_list* list, int value) {
 		}
 		i--;
 	}
+	return 0;
 }
