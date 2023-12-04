@@ -5,7 +5,7 @@
 #include "headers/list.h"
 #include "headers/timer.h"
 
-#define TEST_FROM 7
+#define TEST_FROM 1
 #define TEST_UNTIL 16
 #define SEARCH_ATTEMPTS 10000
 int main() {
@@ -22,6 +22,9 @@ int main() {
 	for (i = TEST_FROM; i <= TEST_UNTIL; i++) {
 		printf("Timing for n = %d", i);
 		lst = create_sample_list(i);
+		// This is done after the generation of the sample list just to have an idea of how long it takes to generate it
+		// But this information is not what we're searching for in this algorithm, so we don't display more verbose.
+		printf(": ");
 		max_value = pow(2, i) - 1;
 		startTimer();
 		for (j = 0; j < SEARCH_ATTEMPTS; j++) {
@@ -29,7 +32,7 @@ int main() {
 		}
 		stopTimer();
 		lvl10_time = getMilliseconds();
-		printf(": %f", lvl10_time);
+		printf("%f", lvl10_time);
 		startTimer();
 		for (j = 0; j < SEARCH_ATTEMPTS; j++) {
 			search_list(lst, rand() % max_value);
