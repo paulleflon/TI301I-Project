@@ -6,12 +6,11 @@ set(CMAKE_C_STANDARD 11)
 include_directories(headers)
 
 add_library(CommonLibrary
-        headers/cell.h
-        headers/list.h
-        headers/timer.h
-        src/cell.c
-        src/list.c
-        src/timer.c)
+        headers/appointments.h
+        src/appointments.c
+        headers/search.h
+        headers/search.h
+        src/search.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
