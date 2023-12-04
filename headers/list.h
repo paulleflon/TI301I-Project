@@ -7,7 +7,7 @@ typedef struct s_list
 {
     t_cell **heads;
     int max_levels;
-} t_list; 
+} t_list;
 
 t_list* create_list(int max_levels);
 

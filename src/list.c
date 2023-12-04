@@ -215,15 +215,12 @@ int search_list_level(t_list* list, int level, int value) {
 int search_list(t_list* list, int value) {
 	int i = list->max_levels-1;
 	t_cell *current = list->heads[i];
-	while (i >= 0) {
-		while (current) {
-			if (current->value == value)
-				return 1;
-			if (current->levels[i] && current->levels[i]->value > value)
-				i--;
-			current = current->levels[i];
-		}
-		i--;
+	while (current && i >= 0) {
+		if (current->value == value)
+			return 1;
+		if (current->levels[i] && current->levels[i]->value > value)
+			i--;
+		current = current->levels[i];
 	}
 	return 0;
 }
