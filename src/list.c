@@ -213,14 +213,21 @@ int search_list_level(t_list* list, int level, int value) {
  * @return Whether the value is in the list
  */
 int search_list(t_list* list, int value) {
-	int i = list->max_levels-1;
-	t_cell *current = list->heads[i];
-	while (current && i >= 0) {
-		if (current->value == value)
+	int lvl = list->max_levels-1;
+	return search_cell(list, list->heads[lvl], lvl, value);
+}
+
+int search_cell(t_list *list, t_cell *cell, int level, int value) {
+	while (level >= 0) {
+		int cvalue = cell->value;
+		if (cvalue == value)
 			return 1;
-		if (current->levels[i] && current->levels[i]->value > value)
-			i--;
-		current = current->levels[i];
+		if (cell->levels[level] == NULL || cell->levels[level]->value > value)
+			level--;
+		if (cvalue > value)
+			cell = list->heads[level];
+		else
+			cell = cell->levels[level];
 	}
 	return 0;
 }

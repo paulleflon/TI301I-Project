@@ -32,7 +32,7 @@ void part2_search_demo() {
 	t_list *lst = create_sample_list(3);
 	display_list_aligned(lst);
 	printf("Is 1 in level 1 ? - %s\n", search_list_level(lst, 1, 1) ? "Yes" : "No");
-	printf("Is 1 in the list ? - %s\n", search_list(lst, 4) ? "Yes" : "No");
+	printf("Is 1 in the list ? - %s\n", search_list(lst, 7) ? "Yes" : "No");
 }
 
 int main() {
