@@ -29,10 +29,10 @@ void part1_demo() {
  * Demonstration of part 2 functions
  */
 void part2_search_demo() {
-	t_list *lst = create_sample_list(3);
+	t_list *lst = create_sample_list(4);
 	display_list_aligned(lst);
 	printf("Is 1 in level 1 ? - %s\n", search_list_level(lst, 1, 1) ? "Yes" : "No");
-	printf("Is 1 in the list ? - %s\n", search_list(lst, 7) ? "Yes" : "No");
+	printf("Is 1 in the list ? - %s\n", search_list(lst,-6) ? "Yes" : "No");
 }
 
 int main() {

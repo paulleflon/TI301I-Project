@@ -189,12 +189,14 @@ void insert_cell_sorted(t_list* list, t_cell* cell) {
  * @param value The value to search for
  * @return Whether the value is in the level
  */
+static int czero = 0;
 int search_list_level(t_list* list, int level, int value) {
 	t_cell *current = list->heads[level];
 	if (level >= list->max_levels)
 		return 0;
 
 	while (current) {
+		czero++;
 		if (current->value == value)
 			return 1;
 		if (current->value > value)
@@ -216,18 +218,25 @@ int search_list(t_list* list, int value) {
 	int lvl = list->max_levels-1;
 	return search_cell(list, list->heads[lvl], lvl, value);
 }
-
+static int ccell = 0;
 int search_cell(t_list *list, t_cell *cell, int level, int value) {
-	while (level >= 0) {
+	int i = level;
+	while (i >= 0) {
+		ccell++;
 		int cvalue = cell->value;
+		if (i == 0 && cvalue > value)
+			return 0;
 		if (cvalue == value)
 			return 1;
-		if (cell->levels[level] == NULL || cell->levels[level]->value > value)
-			level--;
 		if (cvalue > value)
-			cell = list->heads[level];
-		else
-			cell = cell->levels[level];
+			cell = list->heads[--i];
+		else {
+			while (cell->levels[i] == NULL && i >= 0)
+				i--;
+			while (cell->levels[i] != NULL && cell->levels[i]->value > value && i > 0)
+				i--;
+			cell = cell->levels[i];
+		}
 	}
 	return 0;
 }
