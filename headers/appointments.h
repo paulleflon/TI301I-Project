@@ -52,6 +52,7 @@ typedef struct s_contact_store {
 } ContactStore;
 
 Contact* createContact(char* firstname, char* lastname, ContactStore* calendar);
+ContactCell* searchContactById(ContactStore* calendar, char* id);
 Appointment* createAppointment(Date* date, Time* time, Time* duration, char* reason);
 AppointmentListCell* createAppointmentListCell(Appointment* appointment);
 void insertAppointmentInList(AppointmentList* list, Appointment* appointment);

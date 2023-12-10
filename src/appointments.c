@@ -102,6 +102,29 @@ Contact* createContact(char *firstname, char *lastname, ContactStore* calendar) 
 	//endregion
 	return contact;
 }
+
+ContactCell* searchContactById(ContactStore* calendar, char* id) {
+	int i = 3;
+	ContactCell* current = calendar->heads[i];
+	while (i >= 0) {
+		char* cid = current->id;
+		if (i == 0 && strcmp(cid, id) > 0)
+			return NULL;
+		if (strcmp(cid, id) == 0)
+			return current;
+		if (strcmp(cid, id) > 0)
+			current = calendar->heads[--i];
+		else {
+			while (current->levels[i] == NULL && i >= 0)
+				i--;
+			while (current->levels[i] != NULL && current->levels[i]->id > id && i > 0)
+				i--;
+			current = current->levels[i];
+		}
+	}
+	return NULL;
+}
+
 Appointment* createAppointment(Date* date, Time* time, Time* duration, char* reason) {
 	Appointment* appointment = (Appointment*) malloc(sizeof(Appointment));
 	appointment->date = date;
