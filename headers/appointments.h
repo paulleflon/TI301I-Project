@@ -5,17 +5,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-
-typedef struct s_date {
-	int day;
-	int month;
-	int year;
-} Date;
-
-typedef struct s_time {
-	int hours;
-	int minutes;
-} Time;
+#include "utils.h"
 
 typedef struct s_appointment {
 	Date* date;
@@ -53,6 +43,7 @@ typedef struct s_contact_store {
 
 Contact* createContact(char* firstname, char* lastname, ContactStore* calendar);
 ContactCell* searchContactById(ContactStore* calendar, char* id);
+ContactCell **searchContactsByQuery(ContactStore *calendar, char *query, int *resultLength);
 Appointment* createAppointment(Date* date, Time* time, Time* duration, char* reason);
 AppointmentListCell* createAppointmentListCell(Appointment* appointment);
 void insertAppointmentInList(AppointmentList* list, Appointment* appointment);

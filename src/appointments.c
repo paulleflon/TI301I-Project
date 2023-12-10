@@ -48,6 +48,8 @@ Contact* createContact(char *firstname, char *lastname, ContactStore* calendar) 
 	if (strcmp(newCell->id, calendar->heads[0]->id) < 0) {
 		newCell->nbLevels = 4;
 		newCell->levels = (ContactCell **) malloc(4 * sizeof(ContactCell *));
+		for (i = 0; i < 4; i++)
+			newCell->levels[i] = NULL;
 		int levels = 1;
 		if (newCell->id[0] != calendar->heads[3]->id[0])
 			levels = 4;
@@ -125,6 +127,50 @@ ContactCell* searchContactById(ContactStore* calendar, char* id) {
 	return NULL;
 }
 
+ContactCell **searchContactsByQuery(ContactStore *calendar, char *query, int *resultLength) {
+	if (query == NULL || query[0] == '\0') {
+		*resultLength = 0;
+		return NULL;
+	}
+	int i = 3;
+	int len = strlen(query); // The length of the query
+	char* sub = NULL; // The substring of the current cell's id, as long as the query string. 1 more char for the null terminating character.
+	ContactCell* current = calendar->heads[i];
+	while (i >= 0 && current != NULL) {
+		char* cid = current->id;
+		sub = substr(cid, len);
+		if (strcmp(sub, query) == 0)
+			break;
+		if (i > 0 && strcmp(sub, query) > 0)
+			current = calendar->heads[--i];
+		else {
+			while (current->levels[i] == NULL && i > 0)
+				i--;
+			while (current->levels[i] != NULL && strcmp(substr(current->levels[i]->id, len), query) > 0 && i > 0)
+				i--;
+			current = current->levels[i];
+		}
+	}
+	if (current == NULL)
+		return NULL;
+	i = 0;
+	ContactCell** res =(ContactCell**) malloc(sizeof(ContactCell*));
+	res[i] = current;
+	current = current->levels[0];
+	while (current != NULL) {
+		sub = substr(current->id, len);
+		if (strcmp(sub, query) == 0) {
+			res = (ContactCell**)realloc(res, (++i + 1) * sizeof(ContactCell*));
+			res[i] = current;
+		} else
+			break;
+		current = current->levels[0];
+	}
+	*resultLength = i + 1;
+	return res;
+}
+
+
 Appointment* createAppointment(Date* date, Time* time, Time* duration, char* reason) {
 	Appointment* appointment = (Appointment*) malloc(sizeof(Appointment));
 	appointment->date = date;
@@ -174,8 +220,6 @@ int removeAppointmentByIndex(AppointmentList* list, int i) {
 	}
 	return 0;
 }
-
-void deleteAppointment(Contact* contact, Appointment* appointment) {}
 
 void displayAppointments(AppointmentList* list) {
 	AppointmentListCell* current = list->head;
