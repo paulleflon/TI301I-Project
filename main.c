@@ -166,7 +166,7 @@ int main() {
 			}
 			case 3: {
 				printf("== View contact's appointments ==\n");
-				printf("Conact Id:");
+				printf("Contact Id:");
 				char *id = scanString();
 				ContactCell* cell = searchContactById(&CONTACTS, id);
 				if (cell == NULL)  {
@@ -174,6 +174,25 @@ int main() {
 					break;
 				}
 				displayAppointments(cell->contact->appointments);
+				break;
+			}
+			case 4: {
+				printf("== Delete contact's apppointment ==\n");
+				printf("Contact Id:");
+				char *id = scanString();
+				ContactCell* cell = searchContactById(&CONTACTS, id);
+				if (cell == NULL)  {
+					printf("There is no contact with id: %s\n", id);
+					break;
+				}
+				printf("Appointment Index:");
+				int i;
+				scanf("%d", &i);
+				int success = removeAppointmentByIndex(cell->contact->appointments, i);
+				if (success)
+					printf("== Sucessfully deleted appointment %d ==\n", i);
+				else
+					printf("== No appointment with id %d ==\n", i);
 				break;
 			}
 			case 8: {

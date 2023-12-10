@@ -56,9 +56,7 @@ ContactCell* searchContactById(ContactStore* calendar, char* id);
 Appointment* createAppointment(Date* date, Time* time, Time* duration, char* reason);
 AppointmentListCell* createAppointmentListCell(Appointment* appointment);
 void insertAppointmentInList(AppointmentList* list, Appointment* appointment);
-void removeAppointmentFromList(AppointmentList* list, Appointment* appointment);
-void addAppointment(Contact* contact, Appointment* appointment);
-void deleteAppointment(Contact* contact, Appointment* appointment);
+int removeAppointmentByIndex(AppointmentList* list, int i);
 void displayAppointments(AppointmentList* list);
 
 #endif // CONTACTS_H

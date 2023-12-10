@@ -147,34 +147,34 @@ void insertAppointmentInList(AppointmentList* list, Appointment* appointment) {
 	list->head = cell;
 }
 
-void removeAppointmentFromList(AppointmentList* list, Appointment* appointment) {
+int removeAppointmentByIndex(AppointmentList* list, int i) {
 	if (list->head == NULL)
-		return; // List is empty, nothing to delete.
-
+		return 0; // List is empty, nothing to delete.
+	int j = 1;
 	AppointmentListCell *current = list->head,
 						*prev = NULL;
-	if (current->value == appointment) {
+	if (j == i) {
 		list->head = current->next;
 		free(current->value);
 		free(current);
-		return;
+		return 1;
 	}
 
-	while (current != NULL && current->value != appointment) {
+	while (current != NULL && j != i) {
 		prev = current;
 		current = current->next;
+		j++;
 	}
 
 	if (current != NULL) {
 		prev->next = current->next;
 		free(current->value);
 		free(current);
+		return 1;
 	}
+	return 0;
 }
 
-void addAppointment(Contact* contact, Appointment* appointment) {
-	insertAppointmentInList(contact->appointments, appointment);
-}
 void deleteAppointment(Contact* contact, Appointment* appointment) {}
 
 void displayAppointments(AppointmentList* list) {
@@ -183,13 +183,16 @@ void displayAppointments(AppointmentList* list) {
 		printf("No appointment.\n");
 		return;
 	}
+	int i = 1;
 	while (current != NULL) {
 		printf("---\n");
-		printf("Date : %d/%d/%d\n", current->value->date->day, current->value->date->month, current->value->date->year);
-		printf("Time : %d:%d\n", current->value->time->hours, current->value->time->minutes);
-		printf("Duration : %d:%d\n", current->value->duration->hours, current->value->time->minutes);
-		printf("Reason : %s\n", current->value->reason);
+		printf("Index: %d\n", i);
+		printf("Date: %d/%d/%d\n", current->value->date->day, current->value->date->month, current->value->date->year);
+		printf("Time: %d:%d\n", current->value->time->hours, current->value->time->minutes);
+		printf("Duration: %d:%d\n", current->value->duration->hours, current->value->time->minutes);
+		printf("Reason: %s\n", current->value->reason);
 		printf("---\n");
 		current = current->next;
+		i++;
 	}
 }
