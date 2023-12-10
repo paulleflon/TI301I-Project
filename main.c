@@ -164,6 +164,18 @@ int main() {
 				printf("== Successfully created a new appointment ==\n");
 				break;
 			}
+			case 3: {
+				printf("== View contact's appointments ==\n");
+				printf("Conact Id:");
+				char *id = scanString();
+				ContactCell* cell = searchContactById(&CONTACTS, id);
+				if (cell == NULL)  {
+					printf("There is no contact with id: %s\n", id);
+					break;
+				}
+				displayAppointments(cell->contact->appointments);
+				break;
+			}
 			case 8: {
 				return 0;
 			}

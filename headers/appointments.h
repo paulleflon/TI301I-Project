@@ -59,5 +59,6 @@ void insertAppointmentInList(AppointmentList* list, Appointment* appointment);
 void removeAppointmentFromList(AppointmentList* list, Appointment* appointment);
 void addAppointment(Contact* contact, Appointment* appointment);
 void deleteAppointment(Contact* contact, Appointment* appointment);
+void displayAppointments(AppointmentList* list);
 
 #endif // CONTACTS_H

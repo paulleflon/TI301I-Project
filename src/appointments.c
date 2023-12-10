@@ -177,3 +177,19 @@ void addAppointment(Contact* contact, Appointment* appointment) {
 }
 void deleteAppointment(Contact* contact, Appointment* appointment) {}
 
+void displayAppointments(AppointmentList* list) {
+	AppointmentListCell* current = list->head;
+	if (current == NULL) {
+		printf("No appointment.\n");
+		return;
+	}
+	while (current != NULL) {
+		printf("---\n");
+		printf("Date : %d/%d/%d\n", current->value->date->day, current->value->date->month, current->value->date->year);
+		printf("Time : %d:%d\n", current->value->time->hours, current->value->time->minutes);
+		printf("Duration : %d:%d\n", current->value->duration->hours, current->value->time->minutes);
+		printf("Reason : %s\n", current->value->reason);
+		printf("---\n");
+		current = current->next;
+	}
+}
