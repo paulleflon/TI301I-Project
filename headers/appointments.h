@@ -43,6 +43,7 @@ typedef struct s_contact_store {
 
 Contact* createContact(char* firstname, char* lastname, ContactStore* calendar);
 ContactCell* searchContactById(ContactStore* calendar, char* id);
+ContactCell* searchContactLevel0(ContactStore* calendar, char* id);
 ContactCell **searchContactsByQuery(ContactStore *calendar, char *query, int *resultLength);
 Appointment* createAppointment(Date* date, Time* time, Time* duration, char* reason);
 AppointmentListCell* createAppointmentListCell(Appointment* appointment);

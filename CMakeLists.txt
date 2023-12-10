@@ -9,4 +9,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(Main_Project main.c src/appointments.c headers/appointments.h
         headers/utils.h
-        src/utils.c)
+        src/utils.c
+        headers/timer.h
+        src/timer.c)

@@ -98,16 +98,30 @@ Contact* createContact(char *firstname, char *lastname, ContactStore* calendar) 
 		&& newCell->levels[2]->id[1] == newCell->id[1])
 		newCell->levels[2] = newCell->levels[2]->levels[2];
 
-	if (levels > 3 && newCell->levels[2] && newCell->levels[3]->id[0] == newCell->id[0])
+	if (levels > 3 && newCell->levels[3] && newCell->levels[3]->id[0] == newCell->id[0])
 		newCell->levels[3] = newCell->levels[3]->levels[3];
 	//endregion
 	//endregion
 	return contact;
 }
 
+ContactCell* searchContactLevel0(ContactStore* calendar, char* id) {
+	ContactCell* current = calendar->heads[0];
+	while (current != NULL) {
+		if (strcmp(current->id, id) == 0)
+			return current;
+		if (current->levels[0] != NULL && strcmp(current->levels[0]->id, id) < 0)
+			return 0;
+		current = current->levels[0];
+	}
+	return 0;
+}
+
 ContactCell* searchContactById(ContactStore* calendar, char* id) {
 	int i = 3;
 	ContactCell* current = calendar->heads[i];
+	if (current == NULL)
+		return NULL;
 	while (i >= 0) {
 		char* cid = current->id;
 		if (i == 0 && strcmp(cid, id) > 0)

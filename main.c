@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "headers/appointments.h"
 #include "headers/utils.h"
+#include "headers/timer.h"
 
 void display_level(ContactStore* list, int level) {
 	ContactCell *temp = list->heads[level];
@@ -23,16 +25,13 @@ void display_list(ContactStore* list){
 }
 
 int main() {
+	srand(time(NULL));
 	ContactStore CONTACTS;
-	for (int i = 0; i < 4;i++)
+	ContactStore SAMPLE_CONTACTS; // This is used for the performance trace.
+	for (int i = 0; i < 4;i++) {
 		CONTACTS.heads[i] = NULL;
-	createContact("ben", "leflon",&CONTACTS);
-	createContact("paul", "leflon",&CONTACTS);
-	createContact("oli", "leflon",&CONTACTS);
-	createContact("adele", "chamoux",&CONTACTS);
-	createContact("chamoux", "chamoux",&CONTACTS);
-	createContact("iri", "rasolo",&CONTACTS);
-	display_list(&CONTACTS);
+		SAMPLE_CONTACTS.heads[i] = NULL;
+	}
 	char* menu[9] = {
 			"Add contact",
 			"Add appointment",
@@ -130,8 +129,49 @@ int main() {
 					printf("== No appointment with id %d ==\n", i);
 				break;
 			}
-			case 8: {
-				return 0;
+			case 7: {
+				setvbuf(stdout, NULL, _IONBF, 0);
+				printf("== Comparing Search speeds ==\n");
+				printf("- Level 0 Search | Multilevel Search\n");
+				FILE* names = fopen("sample_names.txt", "r");
+				char* searchedNames[256] = {};
+				char* line = NULL;
+				size_t len = 0;
+				int contactsCount = 0;
+				int read = 0;
+				for (int i = 10; i < 100000 && read != -1; i*=2) {
+				int read = getline(&line, &len, names);
+					 while (contactsCount < i && read != -1) {
+						 if (line[read - 1] == '\n')
+							 line[read - 1] = '\0';
+						 contactsCount++;
+						 if (contactsCount <= 256)
+							 searchedNames[contactsCount-1] = line;
+						 createContact("SomeName", line, &SAMPLE_CONTACTS);
+						 read = getline(&line, &len, names);
+					 }
+					 printf("With %d elements:", contactsCount);
+					 // Level 0 search
+					 startTimer();
+					 int max = contactsCount > 256 ? 256 : contactsCount;
+					 for (int j = 0; j <10000; j++) {
+						 char* search = searchedNames[rand() % max];
+						 searchContactLevel0(&SAMPLE_CONTACTS, search);
+					 }
+					 stopTimer();
+					 printf(" %f", getMilliseconds());
+					 // Multilevel search
+					 startTimer();
+					 for (int j = 0;j < 10000; j++) {
+						 char* search = searchedNames[rand() % max];
+						 searchContactById(&SAMPLE_CONTACTS, search);
+					 }
+					 stopTimer();
+					 printf(" | %f\n", getMilliseconds());
+				}
+				free(line);
+				fclose(names);
+				break;
 			}
 			default:
 				printf("To be implemented...\n");
